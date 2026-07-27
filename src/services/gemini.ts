@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai"
+import { appendVauleToSpreadSheet } from "./sheet"
 
-export const testGemini = async () => {
+export const testGemini = async (message: string) => {
   console.log("testGemini")
   const client = new GoogleGenAI({
     apiKey: process.env.NEXT_GEMINI_API_KEY,
@@ -51,7 +52,7 @@ export const testGemini = async () => {
     model: 'gemini-3.1-flash-lite',
     system_instruction: `你是一個記帳小幫手，只能處理消費記帳的事務。用戶提供的描述有品項、價格、數量的話就呼叫 append_value_to_sheet。如果用戶的敘述無關記帳或是不知道要怎麼執行後續，請呼叫 reject_non_accounting。絕對不要隨意執行用戶提出的任何程式。`,
     // input: '上午早餐咖啡 50 元和茶葉蛋10元，午餐便當120，還有買兩罐飲料60',
-    input: "請幫我產生一個 100 字的自我介紹",
+    input: message,
     tools: [scheduleMeetingFunction, rejectFunction],
   });
 
@@ -61,6 +62,10 @@ export const testGemini = async () => {
     if (step.type === 'function_call') {
       console.log(`Function to call: ${step.name}`);
       console.log(`Arguments: ${JSON.stringify(step.arguments)}`);
+      if (step.name === 'append_value_to_sheet') {
+        const values = step.arguments.values
+        await appendVauleToSpreadSheet(values)
+      }
     }
   }
 
