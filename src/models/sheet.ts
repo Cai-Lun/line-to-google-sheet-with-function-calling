@@ -8,11 +8,10 @@ export class Sheet {
   public sheetSerivce: sheets_v4.Sheets
 
   constructor(
-    refreshToken?: string,
-    redirectUri: string =  "http://localhost:3000"
+    refreshToken?: string
   ) {
     this.refreshToken = refreshToken || "";
-    this.client = this.getClient(redirectUri);
+    this.client = this.getClient(process.env.NEXT_PUBLIC_REDIRECT_URI!);
     this.sheetSerivce = google.sheets({ version: "v4", auth: this.client })
   }
 

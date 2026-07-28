@@ -4,7 +4,6 @@ import { Sheet } from "@/src/models/sheet"
 import { getAccountBinding, updateAccountBindingValueByLineId } from "@/src/services/accountBinding"
 import { createSpreadSheet, setSheetHeader } from "@/src/services/sheet"
 import { redirect } from "next/navigation"
-import { testGemini } from "@/src/services/gemini"
 
 export const testGetAccountBinding = async () => {
   const res = await getAccountBinding()
@@ -65,9 +64,4 @@ export const testCreateSpreadSheetAndSetHeader = async () => {
 
     return err.message
   }
-}
-
-export const execGemini = async () => {
-  const res = await testGemini()
-  return res
 }

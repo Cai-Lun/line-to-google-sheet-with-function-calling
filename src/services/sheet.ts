@@ -43,7 +43,6 @@ export const setSheetHeader = async (spreadsheetId: string) => {
   }
 }
 
-
 export const appendVauleToSpreadSheet = async (values: string[][]) => {
   try {
     const accountBinding = await getAccountBinding()
