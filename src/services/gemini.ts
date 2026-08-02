@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai"
 import { appendVauleToSpreadSheet } from "./sheet"
 
 export const processAccountingMessage = async (message: string) => {
-  console.log("processAccountingMessage")
+  console.log("--- processAccountingMessage")
   const client = new GoogleGenAI({
     apiKey: process.env.NEXT_GEMINI_API_KEY,
   })
@@ -56,7 +56,7 @@ export const processAccountingMessage = async (message: string) => {
     tools: [scheduleMeetingFunction, rejectFunction],
   });
 
-  console.log("interaction", interaction)
+  console.log("--- interaction", interaction)
   
   try {
     for (const step of interaction.steps) {

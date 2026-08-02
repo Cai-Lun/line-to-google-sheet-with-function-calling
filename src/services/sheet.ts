@@ -3,7 +3,7 @@ import { google } from "googleapis"
 import { Sheet } from "../models/sheet"
 
 export const createSpreadSheet = async () => {
-  console.log("createSpreadSheet start")
+  console.log("--- createSpreadSheet start")
   try {
     const accountBinding = await getAccountBinding()
     const refreshToken = accountBinding?.google_sheet_refresh_token
@@ -64,7 +64,7 @@ export const appendVauleToSpreadSheet = async (values: string[][]) => {
       }
     })
 
-    console.log("appendVauleToSpreadSheet res", res)
+    console.log("--- appendVauleToSpreadSheet res", res)
 
   } catch (error) {
     const err = error as Error;
