@@ -19,7 +19,7 @@ export class Sheet {
     const client = new google.auth.OAuth2({
       clientId: process.env.NEXT_GOOGLE_CLIENT_ID,
       clientSecret: process.env.NEXT_GOOGLE_CLIENT_SECRET,
-      redirectUri: redirectUri,
+      redirectUri: `${redirectUri}/oauth/google/callback`,
     })
 
     if(this.refreshToken) client.setCredentials({

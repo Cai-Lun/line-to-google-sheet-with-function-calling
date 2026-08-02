@@ -18,9 +18,9 @@ export default function Home() {
     console.log(res)
   }
 
-  useEffect(() => {
-    if(code) testSetRefreshToken(code)
-  }, [code])
+  // useEffect(() => {
+  //   if(code) testSetRefreshToken(code)
+  // }, [code])
 
   useEffect(() => {
     execGetAccountBinding()
