@@ -1,8 +1,31 @@
+import { setRefreshTokenAndSpreadsheet } from "./action"
+
+export default async function Page(
+  { searchParams }: {searchParams: Promise<{code: string}>}) {
+  const { code } = await searchParams
+  let responsne = { status: 500, message: "Something went wrong, please try again." }
+
+  if (code) {
+    responsne = await setRefreshTokenAndSpreadsheet(code)
+  }
+
+  return (
+    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+    <main className="flex flex-1 w-full max-w-3xl flex-col py-32 px-16 bg-white dark:bg-black sm:items-start">
+      <div>{responsne.message}</div>
+    </main>
+  </div>
+  )
+}
+
+/**
+
 "use client"
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import {
-  setRefreshToken,
+  // setRefreshToken,
+  setRefreshTokenAndSpreadsheet,
 } from "./action"
 import { Spinner } from "@heroui/react"
 
@@ -16,20 +39,25 @@ export default function Home() {
   const code = searchParams.get("code")
 
   useEffect(() => {
-    if (code) handleSetRefreshToken()
+    if (code) handlerSetRefreshTokenAndSpreadsheet()
   }, [code]) 
 
-  const handleSetRefreshToken = async () => {
-    if (code) {
-      setLoading(true)
-      const message = await setRefreshToken(code)
-      setLoading(false)
-      setResponse({
-        status: message.status,
-        message: message.message,
-      })
-    }
+  const handlerSetRefreshTokenAndSpreadsheet = async () => {
+    if (!code) return
+    await setRefreshTokenAndSpreadsheet(code)
   }
+
+  // const handleSetRefreshToken = async () => {
+  //   if (code) {
+  //     setLoading(true)
+  //     const message = await setRefreshToken(code)
+  //     setLoading(false)
+  //     setResponse({
+  //       status: message.status,
+  //       message: message.message,
+  //     })
+  //   }
+  // }
 
   const messageResponse = () => {
     return (
@@ -58,3 +86,5 @@ export default function Home() {
     </div>
   );
 }
+
+*/

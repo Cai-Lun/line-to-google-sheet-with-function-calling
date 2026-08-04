@@ -1,7 +1,7 @@
 import { GoogleGenAI } from "@google/genai"
 import { appendVauleToSpreadSheet } from "./sheet"
 
-export const processAccountingMessage = async (message: string) => {
+export const processAccountingMessage = async (message: string, refreshToken: string, spreadsheetId: string) => {
   console.log("--- processAccountingMessage")
   const client = new GoogleGenAI({
     apiKey: process.env.NEXT_GEMINI_API_KEY,
@@ -65,7 +65,7 @@ export const processAccountingMessage = async (message: string) => {
         console.log(`Arguments: ${JSON.stringify(step.arguments)}`);
         if (step.name === 'append_value_to_sheet') {
           const values = step.arguments.values
-          await appendVauleToSpreadSheet(values)
+          await appendVauleToSpreadSheet(values, refreshToken, spreadsheetId)
 
           return step.arguments
         }
@@ -76,6 +76,4 @@ export const processAccountingMessage = async (message: string) => {
     console.error("processAccountingMessage error", err);
     throw error;
   }
-  
-  return ""
 }

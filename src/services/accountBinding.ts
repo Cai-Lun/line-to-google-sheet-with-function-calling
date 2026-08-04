@@ -13,7 +13,7 @@ export const getAccountBinding = async () => {
   }
 }
 
-export const createAccountBindingTableAndInserValue = async (lineId: string) => {
+export const createAccountBindingTableAndInsertValue = async (lineId: string) => {
   try {
     await createAccountBindingTable()
     await insertValueIntoAccountBinding("line_id", lineId)
