@@ -18,7 +18,7 @@ export const createSpreadSheet = async (refreshToken: string) => {
     const res = await sheet.sheetSerivce.spreadsheets.create({
       requestBody: {
         properties: {
-          title: "My first spreadsheet"
+          title: process.env.NEXT_PUBLIC_SPREADSHEET_NAME ?? "我的記賬 Sheet"
         }
       }
     })
