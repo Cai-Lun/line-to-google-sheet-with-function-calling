@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai"
 import { appendVauleToSpreadSheet } from "./sheet"
+import { getCurrentDateTime } from "../utils/dayjs"
 
 export const processAccountingMessage = async (message: string, refreshToken: string, spreadsheetId: string) => {
   console.log("--- processAccountingMessage")
@@ -10,21 +11,21 @@ export const processAccountingMessage = async (message: string, refreshToken: st
   const scheduleMeetingFunction = {
     type: 'function' as const,
     name: 'append_value_to_sheet',
-    description: `用戶會輸入一段敘述，請幫我將敘述內提到對應的資料組成陣列，陣列的資料格式為 [[品項, 單價, 數量, 小計, 日期]]，今天日期為: ${new Date().toISOString().split('T')[0]}`,
+    description: `用戶會輸入一段敘述，請幫我將敘述內提到對應的資料組成陣列，陣列的資料格式為 [[品項, 單價, 數量, 小計, 日期]]，目前的日期與時間為: ${getCurrentDateTime()}`,
     parameters: {
       type: 'object',
       properties: {
         values: {
           type: 'array',
-          description: '多筆資料列，例如 [["咖啡", 50, 1, 50, "2026-07-27"]]',
+          description: '多筆資料列，例如 [["咖啡", 50, 1, 50, "2026-07-27 10:00:00"]]',
           items: {
             type: 'array',
             description: '[item, price, quantity, total, date]',
             items: {
               anyOf: [{ type: 'string' }, { type: 'number' }],
             },
-            minItems: 5,
-            maxItems: 5,
+            // minItems: 5,
+            // maxItems: 5,
           },
         }
       },
@@ -67,7 +68,7 @@ export const processAccountingMessage = async (message: string, refreshToken: st
           const values = step.arguments.values
           await appendVauleToSpreadSheet(values, refreshToken, spreadsheetId)
 
-          return step.arguments
+          return step.arguments.values
         }
       }
     }

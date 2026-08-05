@@ -58,7 +58,8 @@ export const appendVauleToSpreadSheet = async (values: string[][], refreshToken:
       }
     })
 
-    console.log("--- appendVauleToSpreadSheet res", res)
+    // console.log("--- appendVauleToSpreadSheet res", res)
+    console.log("--- appendVauleToSpreadSheet success")
 
   } catch (error) {
     const err = error as Error;

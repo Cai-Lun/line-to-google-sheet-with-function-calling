@@ -74,7 +74,16 @@ export const messageEvent = async (event: webhook.MessageEvent) => {
   console.log("--- message", message)
 
   try {
-     await processAccountingMessage(message!, refreshToken, spreadsheetId)
+     const res = await processAccountingMessage(message!, refreshToken, spreadsheetId)
+     if (res.length > 0) {
+      let replyText = ["This time has been added:"]
+      res.forEach((i: string[]) => {
+        replyText.push(`${i[0]}: ${i[1]} * ${i[2]} = ${i[3]}`)
+      })
+      replyText.push(`on ${res[0][4]}`)
+      await replyMessage(replyToken, replyText.join("\n"))
+     }
+
   } catch (error) {
     const err = error as Error;
     console.error("messageEvent error", err);

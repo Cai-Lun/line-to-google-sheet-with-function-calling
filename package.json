@@ -13,6 +13,7 @@
     "@heroui/react": "^3.2.3",
     "@heroui/styles": "^3.2.3",
     "@line/bot-sdk": "^11.2.0",
+    "dayjs": "^1.11.21",
     "googleapis": "^173.0.0",
     "next": "16.2.10",
     "pg": "^8.22.0",
