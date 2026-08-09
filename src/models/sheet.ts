@@ -32,11 +32,11 @@ export class Sheet {
   async getToken(code: string) {
     try {
       const response = await this.client.getToken(code)
-      console.log("--- getToken result ", response)
+      // console.log("--- getToken result ", response)
       return response.tokens
     } catch (error) {
       const err = error as Error;
-      console.log("--- err ", err)
+      // console.log("--- err ", err)
       console.log("--- error message ", err?.message)
       throw error
     }

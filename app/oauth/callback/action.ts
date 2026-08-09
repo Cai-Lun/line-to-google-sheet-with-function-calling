@@ -26,7 +26,7 @@ const setRefreshToken = async (code: string, lineId: string) => {
 }
 
 export const setRefreshTokenAndSpreadsheet = async (code: string) => {
-  console.log("--- setRefreshTokenAndSpreadsheet code")
+  // console.log("--- setRefreshTokenAndSpreadsheet code")
   try {
     const accountBinding = await getAccountBinding()
     const lineId = accountBinding?.line_id

@@ -24,10 +24,10 @@ export const followEvent = async (event: webhook.FollowEvent) => {
   } catch (e) {
     error = e as Error
     if(error.message.includes("does not exist")) {
-      console.log("--- account_binding table does not exist")
       isTableExist = false
     }
   }
+
   if (!isTableExist) {
     try {
       await createAccountBindingTableAndInsertValue(userId!)
@@ -37,16 +37,15 @@ export const followEvent = async (event: webhook.FollowEvent) => {
       await replyMessage(event.replyToken, text)
 
       return "follow success"
-      // await replyMessage(event.replyToken, "Your line id has been set successfully")
-      // return "follow success"
     } catch (e) {
       const err = e as Error
       console.error("followEvent error", err)
     }
   }
 
-  console.log("--- follow failed, something went wrong ", error)
-  return "follow failed, something went wrong"
+  // console.log("--- follow failed, something went wrong ", error)
+  if (error) throw error
+  throw new Error("follow failed, something went wrong")
 }
 
 export const messageEvent = async (event: webhook.MessageEvent) => {
@@ -58,18 +57,16 @@ export const messageEvent = async (event: webhook.MessageEvent) => {
     const accountBinding = await getAccountBinding()
     const lineId = accountBinding?.line_id
 
-    if (lineId !== userId) return "You are not authorized to use this bot"
+    if (lineId !== userId) throw new Error("You are not authorized to use this bot")
 
     refreshToken = accountBinding.google_sheet_refresh_token
     spreadsheetId = accountBinding.google_sheet_id
     if (!refreshToken || !spreadsheetId) {
       resetSheetToken(replyToken, true)
-      return "Ready to set google sheet token"
+      return "It needs to be authiruzed google sheet again"
     }
   } catch (error) {
-    const err = error as Error
-    console.error("messageEvent error", err)
-    return "Something went wrong"
+    throw error
   }
 
   let message
@@ -77,10 +74,12 @@ export const messageEvent = async (event: webhook.MessageEvent) => {
     message = event.message.text
   }
 
-  console.log("--- message", message)
+  if (!message || message?.trim()) {
+    throw new Error("Message is required")
+  }
 
   try {
-     const res = await processAccountingMessage(message!, refreshToken, spreadsheetId)
+     const res = await processAccountingMessage(message, refreshToken, spreadsheetId)
      if (res.length > 0) {
       let replyText = ["This time has been added:"]
       res.forEach((i: string[]) => {

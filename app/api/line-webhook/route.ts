@@ -25,15 +25,20 @@ export async function POST(request: Request) {
   const handler = requestMapping[eventType as keyof typeof requestMapping]
   // console.log("--- eventType", eventType)
 
-  let res
-  if (handler) {
-    const eventBody = events[0]
-    res = await handler(eventBody)
-  } else {
-    return new Response("Bad Request", { status: 400 })
+  try {
+    let res
+    if (handler) {
+      const eventBody = events[0]
+      res = await handler(eventBody)
+    } else {
+      return new Response("Bad Request", { status: 400 })
+    }
+
+    if (res && res.includes("success")) return new Response("OK", { status: 200 })
+    return new Response(res, { status: 200 })
+  } catch (e) {
+    const error = e as Error
+    // console.error("line-webhook error", err)
+    return new Response(error.message, { status: 500 })
   }
-
-  if (res && res.includes("success")) return new Response("OK", { status: 200 })
-
-  return new Response("Internal Server Error", { status: 500 })
 }
