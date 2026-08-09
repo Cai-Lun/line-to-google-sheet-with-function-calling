@@ -76,7 +76,7 @@ export const messageEvent = async (event: webhook.MessageEvent) => {
     message = event.message.text
   }
 
-  if (!message || message?.trim()) {
+  if (!message || !message.trim()) {
     throw new Error("Message is required")
   }
 
