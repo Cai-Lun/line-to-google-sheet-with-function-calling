@@ -9,6 +9,7 @@ export const validateLineWebhook = async (bodyText: string, signature: string) =
 }
 
 export const followEvent = async (event: webhook.FollowEvent) => {
+  console.log("--- followEvent", event)
   const userId = event?.source?.userId
   if (!userId) return "user id is required"
 
@@ -49,6 +50,7 @@ export const followEvent = async (event: webhook.FollowEvent) => {
 }
 
 export const messageEvent = async (event: webhook.MessageEvent) => {
+  console.log("--- messageEvent", event)
   const userId = event?.source?.userId
   const replyToken = event.replyToken!
   let refreshToken, spreadsheetId
