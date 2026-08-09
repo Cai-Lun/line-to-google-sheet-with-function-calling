@@ -50,10 +50,16 @@ export const followEvent = async (event: webhook.FollowEvent) => {
 }
 
 export const messageEvent = async (event: webhook.MessageEvent) => {
+  const userId = event?.source?.userId
   const replyToken = event.replyToken!
   let refreshToken, spreadsheetId
+
   try {
     const accountBinding = await getAccountBinding()
+    const lineId = accountBinding?.line_id
+
+    if (lineId !== userId) return "You are not authorized to use this bot"
+
     refreshToken = accountBinding.google_sheet_refresh_token
     spreadsheetId = accountBinding.google_sheet_id
     if (!refreshToken || !spreadsheetId) {
