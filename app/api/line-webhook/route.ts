@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     return new Response(res, { status: 200 })
   } catch (e) {
     const error = e as Error
-    // console.error("line-webhook error", err)
+    console.error("line-webhook error", error.message)
     return new Response(error.message, { status: 500 })
   }
 }
