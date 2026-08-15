@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   if (!isValid) return new Response("Unauthorized", { status: 401 })
 
   // console.log("--- bodyText", bodyText)
-  // console.log("--- body", body)
+  console.log("--- body", body)
 
   const events = body.events
   const eventType = events[0].type as webhook.Event["type"]
