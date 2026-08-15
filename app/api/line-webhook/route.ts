@@ -21,6 +21,8 @@ export async function POST(request: Request) {
   console.log("--- body", body)
 
   const events = body.events
+  if (events.length === 0) return new Response("Verify event success", { status: 200 })
+    
   const eventType = events[0].type as webhook.Event["type"]
   const handler = requestMapping[eventType as keyof typeof requestMapping]
   // console.log("--- eventType", eventType)
